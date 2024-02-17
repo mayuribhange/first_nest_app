@@ -1,0 +1,39 @@
+type User {
+  _id: String
+  userName: String
+  userEmail: String
+  userPhone: String
+  userCity: String
+  userState: String
+  userAddress:String
+  userPassword: String
+  isActive: Boolean
+  isDeleted: Boolean
+}
+
+input CreateUserInput {
+  userName: String
+  userEmail: String
+  userPhone: String
+  userPassword: String
+  userCity: String
+  userState: String
+  userAddress: String
+  isActive: Boolean
+  isDeleted: Boolean
+}
+
+input UpdateUserInput {
+  id: Int!
+}
+
+type Query {
+  getUsers: [User]!
+  getUserById(id: String!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): String
+  updateUser(id:ID!,createUserInput: CreateUserInput!): String
+  removeUser(id: ID!,createUserInput:CreateUserInput!): String
+}
