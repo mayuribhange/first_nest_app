@@ -6,7 +6,6 @@ type User {
   userCity: String
   userState: String
   userAddress:String
-  userPassword: String
   isActive: Boolean
   isDeleted: Boolean
 }

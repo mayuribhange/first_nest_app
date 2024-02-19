@@ -1,0 +1,46 @@
+type Restaurant {
+ _id: String
+  restaurantName: String
+  restaurantEmail: String
+  restaurantPhone: String
+  restaurantCity: String
+  restaurantState: String
+  restaurantAddress:String
+  restaurantType:String
+  isActive: Boolean
+  isDeleted: Boolean
+}
+
+input CreateRestaurantInput {
+ restaurantName: String
+  restaurantEmail: String
+  password:String
+  restaurantPhone: String
+  restaurantCity: String
+  restaurantState: String
+  restaurantAddress:String
+  restaurantType:String
+  isActive: Boolean
+  isDeleted: Boolean
+}
+
+input UpdateRestaurantInput {
+  id: Int!
+}
+type LoggedInOutput{
+  email:String,
+  _id:String,
+  restaurantName:String
+}
+
+type Query {
+  getAllRestaurant: [Restaurant]
+  getRestaurantById(id: String!): Restaurant
+  restaurantLogin(restaurantEmail:String!,password:String!):String
+}
+
+type Mutation {
+  createRestaurant(createRestaurantInput: CreateRestaurantInput!): String
+  updateRestaurant(id:ID!,createRestaurantInput: CreateRestaurantInput!):String
+  removeRestaurant(id: ID!): String
+}
