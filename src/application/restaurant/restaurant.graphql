@@ -47,6 +47,7 @@ type Query {
 
 type Mutation {
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): String
+  createFoodCategory(createFoodCategoryInput : CreateFoodCategory!):String
   updateRestaurant(id:ID!,createRestaurantInput: CreateRestaurantInput!):String
   removeRestaurant(id: ID!): String
   createFoodCategory(createFoodCategory:CreateFoodCategory!):String

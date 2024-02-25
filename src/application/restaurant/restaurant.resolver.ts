@@ -1,19 +1,21 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { RestaurantService } from './restaurant.service';
-import { CreateRestaurantInput } from './dto/create-restaurant.input';
+import { CreateFoodCategory, CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
+import { FoodCategoryService } from './foodCategory.service';
 
 @Resolver('Restaurant')
 export class RestaurantResolver {
-  constructor(private readonly restaurantService: RestaurantService) {}
-
+  constructor(private readonly restaurantService: RestaurantService, readonly foodCategoryService: FoodCategoryService) {}
   @Mutation('createRestaurant')
   create(@Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput) {
     return this.restaurantService.create(createRestaurantInput);
   }
 
   @Mutation('createFoodCategory')
-  
+  createFoodCategory(@Args('CreateFoodCategory') CreateFoodCategory: CreateFoodCategory ){
+      return this.foodCategoryService.create(CreateFoodCategory)
+  }
 
   @Query('getAllRestaurant')
   findAll() {
