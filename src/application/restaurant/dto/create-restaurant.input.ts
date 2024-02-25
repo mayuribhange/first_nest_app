@@ -10,3 +10,7 @@ export class CreateRestaurantInput {
      isActive: boolean;
      isDeleted: boolean;
 }
+
+export class CreateFoodCategory {
+     categoryName:string;
+}

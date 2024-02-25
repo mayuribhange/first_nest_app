@@ -1,24 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
-import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { Restaurant, RestaurantDocument } from './schemas/restaurant.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class RestaurantService {
   constructor(
+    private jwtService: JwtService,
     @InjectModel(Restaurant.name)
     private restaurantModel: Model<RestaurantDocument>,
     // @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
   async create(createRestaurantInput: CreateRestaurantInput) {
     try {
-      let data = await this.restaurantModel.create(createRestaurantInput);
-      if (data) {
-        return 'Restaurant Added Successfully...';
+      let isRestaurantPresent = await this.restaurantModel.findOne({
+        restaurantName: createRestaurantInput.restaurantName,
+        restaurantEmail: createRestaurantInput.restaurantEmail,
+      });
+      if (!isRestaurantPresent) {
+        let data = await this.restaurantModel.create(createRestaurantInput);
+        if (data) {
+          return 'Restaurant Added Successfully...';
+        } else {
+          return 'Somthing went wrong';
+        }
       } else {
-        return 'Somthing went wrong';
+        return 'Restaurant Already registered';
       }
     } catch (error) {
       throw new Error(error);
@@ -92,8 +101,14 @@ export class RestaurantService {
         password,
       });
       if (data) {
-        return 'Logged In Successfully';
-      } else {
+        const token = await this.jwtService.signAsync({ userId: data._id,userEmail:data.restaurantEmail });
+        return {
+          message: 'Logged In Successfully',
+          token: token,
+          _id:data._id
+        };
+      }
+       else {
         return 'Something went wrong';
       }
     } catch (error) {

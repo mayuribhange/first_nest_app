@@ -27,20 +27,27 @@ input CreateRestaurantInput {
 input UpdateRestaurantInput {
   id: Int!
 }
+input CreateFoodCategory {
+ categoryName:String 
+}
+type FoodCategory{
+  categoryName:String
+}
 type LoggedInOutput{
-  email:String,
   _id:String,
-  restaurantName:String
+  message:String,
+  token:String
 }
 
 type Query {
   getAllRestaurant: [Restaurant]
   getRestaurantById(id: String!): Restaurant
-  restaurantLogin(restaurantEmail:String!,password:String!):String
+  restaurantLogin(restaurantEmail:String!,password:String!):LoggedInOutput
 }
 
 type Mutation {
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): String
   updateRestaurant(id:ID!,createRestaurantInput: CreateRestaurantInput!):String
   removeRestaurant(id: ID!): String
+  createFoodCategory(createFoodCategory:CreateFoodCategory!):String
 }
