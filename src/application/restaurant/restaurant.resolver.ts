@@ -42,4 +42,14 @@ export class RestaurantResolver {
   restaurantLogin(@Args('restaurantEmail')restaurantEmail:string,@Args('password')password:string) {
     return this.restaurantService.login(restaurantEmail,password)
   }
+
+  @Query('getAllFoodCategory')
+  getAllFoodCategory(){
+    return this.foodCategoryService.findFoodCategory();
+  }
+
+  @Query('getFoodCategoryById')
+  getFoodCategoryById(@Args('id') id: string){
+    return this.foodCategoryService.findFoodCategoryById(id);
+  }
 }

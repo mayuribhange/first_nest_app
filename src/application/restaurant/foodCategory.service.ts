@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFoodCategory, CreateRestaurantInput } from './dto/create-restaurant.input';
-import { Restaurant, RestaurantDocument } from './schemas/restaurant.schema';
+import { CreateFoodCategory } from './dto/create-restaurant.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { FoodCategory,FoodCategoryDocument } from './schemas/foodCategory.schema';
+import {
+  FoodCategory,
+  FoodCategoryDocument,
+} from './schemas/foodCategory.schema';
+import {
+  CATEGORY_NOT_EXISTS,
+  FOOD_CATEGORY_ALREADY_EXISTS,
+  FOOD_CATEGORY_SAVED_SUCCESSFULLY,
+  INTERNAL_SERVER_ERROR,
+} from 'constant/responseConstant';
 
 @Injectable()
 export class FoodCategoryService {
@@ -16,46 +24,50 @@ export class FoodCategoryService {
   ) {}
   async create(createFoodCategoryInput: CreateFoodCategory) {
     try {
-        console.info(createFoodCategoryInput);
+      console.info(createFoodCategoryInput);
       const IS_CATEGORY_PRESENT = await this.foodCategoryModel.findOne({
         categoryName: createFoodCategoryInput.categoryName,
       });
       if (!IS_CATEGORY_PRESENT) {
-        const RESULT = await this.foodCategoryModel.create(createFoodCategoryInput);
-        console.log("hgjhgh",RESULT);
-        
+        const RESULT = await this.foodCategoryModel.create(
+          createFoodCategoryInput,
+        );
+        console.log('hgjhgh', RESULT);
+
         if (RESULT) {
-          return 'Category Added Successfully...';
+          return FOOD_CATEGORY_SAVED_SUCCESSFULLY;
         } else {
-          return 'Somthing went wrong';
+          return INTERNAL_SERVER_ERROR;
         }
       } else {
-        return 'Category Already registered';
+        return FOOD_CATEGORY_ALREADY_EXISTS;
       }
     } catch (error) {
       throw new Error(error);
     }
   }
-  async findAll() {
+  async findFoodCategory() {
     try {
-        const RESULT = await this.foodCategoryModel.find();
+      const RESULT = await this.foodCategoryModel.find();
       if (RESULT && RESULT.length > 0) {
         return RESULT;
       } else {
-        return 'Somthing went wrong';
+        return CATEGORY_NOT_EXISTS;
       }
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async findOne(id: string) {
+  async findFoodCategoryById(id: string) {
     try {
-        const RESULT = await this.foodCategoryModel.findOne({ _id: id });
-      if (RESULT) {
+      console.info(id);
+      const RESULT = await this.foodCategoryModel.findOne({ _id: id });
+      if (!RESULT) {
+        console.info(RESULT);
         return RESULT;
       } else {
-        return 'Something went wrong';
+        return CATEGORY_NOT_EXISTS;
       }
     } catch (error) {
       throw new Error(error);

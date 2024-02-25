@@ -31,6 +31,7 @@ input CreateFoodCategory {
  categoryName:String 
 }
 type FoodCategory{
+  _id: String
   categoryName:String
 }
 type LoggedInOutput{
@@ -43,6 +44,8 @@ type Query {
   getAllRestaurant: [Restaurant]
   getRestaurantById(id: String!): Restaurant
   restaurantLogin(restaurantEmail:String!,password:String!):LoggedInOutput
+  getAllFoodCategory: [FoodCategory]
+  getFoodCategoryById(id: String!): FoodCategory
 }
 
 type Mutation {
