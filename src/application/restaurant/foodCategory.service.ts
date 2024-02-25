@@ -4,24 +4,26 @@ import { Restaurant, RestaurantDocument } from './schemas/restaurant.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { FoodCategoryDocument } from './schemas/foodCategory.schema';
+import { FoodCategory,FoodCategoryDocument } from './schemas/foodCategory.schema';
 
 @Injectable()
 export class FoodCategoryService {
   constructor(
     private jwtService: JwtService,
-    @InjectModel(Restaurant.name)
+    @InjectModel(FoodCategory.name)
     private foodCategoryModel: Model<FoodCategoryDocument>,
     // @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {}
-  async create(CreateFoodCategory: CreateFoodCategory) {
+  async create(createFoodCategoryInput: CreateFoodCategory) {
     try {
-        console.info(CreateFoodCategory);
+        console.info(createFoodCategoryInput);
       const IS_CATEGORY_PRESENT = await this.foodCategoryModel.findOne({
-        categoryName: CreateFoodCategory.categoryName,
+        categoryName: createFoodCategoryInput.categoryName,
       });
       if (!IS_CATEGORY_PRESENT) {
-        const RESULT = await this.foodCategoryModel.create(CreateFoodCategory);
+        const RESULT = await this.foodCategoryModel.create(createFoodCategoryInput);
+        console.log("hgjhgh",RESULT);
+        
         if (RESULT) {
           return 'Category Added Successfully...';
         } else {

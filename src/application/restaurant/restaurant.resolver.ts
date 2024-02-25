@@ -13,8 +13,8 @@ export class RestaurantResolver {
   }
 
   @Mutation('createFoodCategory')
-  createFoodCategory(@Args('CreateFoodCategory') CreateFoodCategory: CreateFoodCategory ){
-      return this.foodCategoryService.create(CreateFoodCategory)
+  createFoodCategory(@Args('createFoodCategoryInput') createFoodCategoryInput: CreateFoodCategory ){
+      return this.foodCategoryService.create(createFoodCategoryInput)
   }
 
   @Query('getAllRestaurant')
