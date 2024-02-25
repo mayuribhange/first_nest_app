@@ -12,6 +12,9 @@ export class RestaurantResolver {
     return this.restaurantService.create(createRestaurantInput);
   }
 
+  @Mutation('createFoodCategory')
+  
+
   @Query('getAllRestaurant')
   findAll() {
     return this.restaurantService.findAll();
